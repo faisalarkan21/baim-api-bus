@@ -7,14 +7,17 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Date;
 
 @Entity
-@Table(name="tb_user")
+@Table(name = "tb_user")
 public class User {
     @Id
-    @GeneratedValue(generator="uuid2")
-    @GenericGenerator(name="uuid2",strategy = "uuid2")
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String id;
     @NotBlank
     private String email;
@@ -28,7 +31,7 @@ public class User {
     private String mobileNumber;
     @NotBlank
     private String roleId;
-    @Column(nullable = false,updatable = false)
+    @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date createdDate;
@@ -108,4 +111,38 @@ public class User {
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
+
+    public void setHashPassword(String password) {
+        try {
+            byte[] salt = getSalt();
+            this.password = get_SHA_512_SecurePassword(password, salt);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private byte[] getSalt() throws NoSuchAlgorithmException {
+        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+        byte[] salt = new byte[16];
+        sr.nextBytes(salt);
+        return salt;
+    }
+
+    private static String get_SHA_512_SecurePassword(String passwordToHash, byte[] salt) {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            md.update(salt);
+            byte[] bytes = md.digest(passwordToHash.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+    }
+
 }
