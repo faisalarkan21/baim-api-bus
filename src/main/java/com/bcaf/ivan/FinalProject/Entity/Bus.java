@@ -17,7 +17,7 @@ public class Bus {
     private String id;
     @NotBlank
     private String code;
-    @NotBlank
+
     private int capacity;
     @NotBlank
     private String make;
