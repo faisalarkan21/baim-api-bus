@@ -27,13 +27,22 @@ public class User {
     private String email;
     @NotBlank
     private String password;
-    @NotBlank
+
     private String firstName;
-    @NotBlank
+
     private String lastName;
-    @NotBlank
     private String mobileNumber;
-    @NotBlank
+
+    private Boolean active;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     private String roleId;
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

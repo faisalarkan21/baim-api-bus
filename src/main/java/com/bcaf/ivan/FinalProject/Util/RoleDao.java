@@ -14,4 +14,7 @@ public interface RoleDao extends JpaRepository<Role,String> {
 
     @Query(nativeQuery = true,value="SELECT r.* FROM tb_role r WHERE r.role like %:role% ")
     Role findIdByRole(@Param("role") String role);
+
+    @Query(nativeQuery = true,value="SELECT r.* FROM tb_role r WHERE r.id like %:id% ")
+    Role findNameByRole(@Param("id") String id);
 }

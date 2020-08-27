@@ -16,14 +16,30 @@ function createUser(){
         	    alert("Password berbeda!");
         	}else{
                 $.ajax({
-                    url :  "/api/createNewAccount",
+                    url :  "/api/checkEmailUser",
                     type: request_method,
                     dataType: 'json',
                     contentType: 'application/json',
                     data: JSON.stringify(registerRequest),
                     success: function(data) {
-                        window.location.href = 'http://localhost:8080/login';
-                        alert("Register Done!");
+                        if(data.id==""||data.id==null){
+                         $.ajax({
+                                url :  "/api/createNewAccount",
+                                type: request_method,
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                data: JSON.stringify(registerRequest),
+                                success: function(data) {
+                                    window.location.href = 'http://localhost:8080/login';
+                                    alert("Register Done!");
+                                },
+                                error: function(data) {
+                                },
+                            });
+                        }
+                        else{
+                            alert("Email telah terdaftar");
+                        }
                     },
                     error: function(data) {
                     },

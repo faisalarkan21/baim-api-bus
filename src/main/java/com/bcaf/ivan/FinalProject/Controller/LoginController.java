@@ -4,13 +4,22 @@ package com.bcaf.ivan.FinalProject.Controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
+//
+//    @GetMapping
+//    @RequestMapping({"/login"})
+//    public String main() {
+//        return "login";
+//    }
 
-    @GetMapping
-    @RequestMapping({"/login"})
-    public String main() {
-        return "login";
+    @GetMapping(value={"/login"})
+    public ModelAndView login(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
     }
+
 }
