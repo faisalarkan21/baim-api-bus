@@ -3,6 +3,7 @@ package com.bcaf.ivan.FinalProject.Util;
 
 import com.bcaf.ivan.FinalProject.Entity.Role;
 import com.bcaf.ivan.FinalProject.Entity.User;
+import com.bcaf.ivan.FinalProject.Entity.UserExt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -3,7 +3,6 @@ package com.bcaf.ivan.FinalProject.Controller;
 import com.bcaf.ivan.FinalProject.Entity.Agency;
 import com.bcaf.ivan.FinalProject.Entity.User;
 import com.bcaf.ivan.FinalProject.Request.RegisterRequest;
-import com.bcaf.ivan.FinalProject.Security.WebSecurityConfig;
 import com.bcaf.ivan.FinalProject.Util.AgencyDao;
 import com.bcaf.ivan.FinalProject.Util.RoleDao;
 import com.bcaf.ivan.FinalProject.Util.UserDao;
@@ -34,17 +33,10 @@ public class UserApiController {
     @Autowired
     private AgencyDao agencyDao;
 
-    @Autowired
-    private WebSecurityConfig webConfig;
-
-    //    @Autowired
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
+    public BCryptPasswordEncoder pass() {
+        return new BCryptPasswordEncoder();
     }
-
     @PostMapping("/createNewAccount")
     public HttpStatus createNewAccount(@RequestBody RegisterRequest registerRequest) {
         User user = new User();
@@ -54,7 +46,7 @@ public class UserApiController {
         user.setMobileNumber(registerRequest.getContactNumber());
         user.setRoleId(roleDao.findIdByRole("owner").getId());
         user.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        user.setPassword(passwordEncoder().encode(registerRequest.getPassword()));
+        user.setPassword(pass().encode(registerRequest.getPassword()));
         userDao.save(user);
 
         Agency agency = new Agency();
@@ -64,7 +56,6 @@ public class UserApiController {
         agency.setCreatedDate(new Timestamp(System.currentTimeMillis()));
         agencyDao.save(agency);
         return HttpStatus.OK;
-//        user.setRoleId(registerRequest.getContactNumber());
     }
 
     @PostMapping("/checkEmailUser")
@@ -86,7 +77,6 @@ public class UserApiController {
         String rs = Obj.writeValueAsString(user);
         if (user.validatePassword(user.getPassword(), userDB.getPassword())) {
             rs = Obj.writeValueAsString(userDB);
-//            webConfig.authenticationProvider();
         }
         return rs;
     }
