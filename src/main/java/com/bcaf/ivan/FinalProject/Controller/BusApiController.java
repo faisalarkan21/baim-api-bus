@@ -16,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,8 +32,10 @@ public class BusApiController {
 
 
     @PostMapping("/getAllBus")
-    public String getAllBus() throws JsonProcessingException {
-        List<Bus> listBus = busDao.findAll();
+    public String getAllBus(HttpServletRequest request) throws JsonProcessingException {
+        HttpSession session = request.getSession(true);
+        String agencyId = (String) session.getAttribute("agencyId");
+        List<Bus> listBus = busDao.findAllBusByAgencyId(agencyId);
         if (listBus == null)
             listBus = new LinkedList<>();
         ObjectMapper Obj = new ObjectMapper();
@@ -50,9 +55,11 @@ public class BusApiController {
     }
 
     @PostMapping("/addBus")
-    public String addBus(@RequestBody List<Bus> listBus) throws JsonProcessingException {
+    public String addBus(@RequestBody List<Bus> listBus,HttpServletRequest request) throws JsonProcessingException {
+        HttpSession session = request.getSession(true);
+        String agencyId = (String) session.getAttribute("agencyId");
         for (Bus b : listBus) {
-            b.setAgencyId("1f7eb9b9-deb0-4e4c-b96d-4e2a3dd34c17");
+            b.setAgencyId(agencyId);
             b.setCreatedDate(new Timestamp(System.currentTimeMillis()));
             busDao.save(b);
         }
