@@ -29,6 +29,7 @@ public class UserExt extends User implements UserDetails {
         this.setRoleId(u.getRoleId());
         this.setUpdatedDate(u.getUpdatedDate());
     }
+
     public UserExt(User u,List<Role> roleList) {
         this.setId(u.getId());
         this.setFirstName(u.getFirstName());

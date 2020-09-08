@@ -10,9 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
-
-
-
     @GetMapping
     @RequestMapping("/login")
     public String login() {

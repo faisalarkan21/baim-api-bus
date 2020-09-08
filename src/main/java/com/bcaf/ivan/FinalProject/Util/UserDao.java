@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserDao extends JpaRepository<User,String> {
-
     @Query(nativeQuery = true,value="SELECT u.* FROM tb_user u WHERE u.email =:email ")
     User findEmailValidation(@Param("email") String email);
 }

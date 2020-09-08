@@ -25,7 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    AuthenticationSuccessHandler authenticationSuccessHandler;
+    CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login","/register")
+                .antMatchers("/login","/register","/recover")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -61,6 +61,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**", "/static/**", "/js/**", "/img/**","/css/**","/scss/**","/vendor/**","/api/**");
+        web.ignoring().antMatchers(
+                "/resources/**",
+                "/static/**",
+                "/fonts/**",
+                "/js/**",
+                "/icons/**",
+                "/img/**",
+                "/images/**",
+                "/css/**",
+                "/scss/**",
+                "/vendor/**",
+                "/api/**");
     }
 }

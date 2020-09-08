@@ -30,12 +30,9 @@ public class User {
     private String email;
     @NotBlank
     private String password;
-
     private String firstName;
-
     private String lastName;
     private String mobileNumber;
-
     private String roleId;
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -62,12 +59,9 @@ public class User {
         this.email = email;
     }
 
-
-
     public String getPassword() {
         return password;
     }
-
 
     public void setPassword(String password) {
         this.password = password;

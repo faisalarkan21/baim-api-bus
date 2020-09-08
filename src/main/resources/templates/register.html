@@ -2,99 +2,103 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <head>
-
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
 
-    <title>Final Project</title>
+    <title>Bus Dway | LOGIN</title>
+    <meta content="Admin Dashboard" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
+    <!-- App Icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
 
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Basic Css files -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/icons.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
 
+<!--    &lt;!&ndash; Custom fonts for this template&ndash;&gt;-->
+<!--    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">-->
+<!--    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"-->
+<!--          rel="stylesheet">-->
+<!--    &lt;!&ndash; Custom styles for this template&ndash;&gt;-->
+<!--    <link href="css/sb-admin-2.min.css" rel="stylesheet">-->
 </head>
 
 <body class="bg-gradient-primary">
 
-<div class="container">
+<!-- Loader -->
+<div id="preloader"><div id="status"><div class="spinner"></div></div></div>
 
-    <div class="card o-hidden border-0 shadow-lg my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                <div class="col-lg-7">
-                    <div class="p-5">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+<!-- Begin page -->
+<div class="accountbg"></div>
+<div class="wrapper-page">
+    <div class="card">
+        <div class="card-body">
+
+            <h3 class="text-center m-0">
+                <a href="index.html" class="logo logo-admin"><img src="images/logo.png" height="30" alt="logo"></a>
+            </h3>
+
+            <div class="p-3">
+                <form class="user" id="formRegister" action="#" method="post">
+                    <div class="form-group row">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="text" class="form-control form-control-user" id="inputFirstName"
+                                   placeholder="First Name">
                         </div>
-                        <form class="user" id="formRegister" action="#" method="post">
-                            <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="text" class="form-control form-control-user" id="inputFirstName"
-                                           placeholder="First Name">
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control form-control-user" id="inputLastName"
-                                           placeholder="Last Name">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control form-control-user" id="inputEmail"
-                                       placeholder="Email Address">
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="password" class="form-control form-control-user"
-                                           id="inputPassword" placeholder="Password">
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="password" class="form-control form-control-user"
-                                           id="inputRePassword" placeholder="Repeat Password">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="inputAgencyName"
-                                       placeholder="Agency Name">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="inputAgencyDetail"
-                                       placeholder="Agency Details">
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="inputContactNumber"
-                                       placeholder="Contact Number">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-user btn-block">
-                                Register Account
-                            </button>
-<!--                            <hr>-->
-<!--                            <a href="index.html" class="btn btn-google btn-user btn-block">-->
-<!--                                <i class="fab fa-google fa-fw"></i> Register with Google-->
-<!--                            </a>-->
-<!--                            <a href="index.html" class="btn btn-facebook btn-user btn-block">-->
-<!--                                <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook-->
-<!--                            </a>-->
-                        </form>
-                        <hr>
-<!--                        <div class="text-center">-->
-<!--                            <a class="small" href="forgot-password.html">Forgot Password?</a>-->
-<!--                        </div>-->
-                        <div class="text-center">
-                            <a class="small" href="login">Already have an account? Login!</a>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-user" id="inputLastName"
+                                   placeholder="Last Name">
                         </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control form-control-user" id="inputEmail"
+                               placeholder="Email Address">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="password" class="form-control form-control-user"
+                                   id="inputPassword" placeholder="Password">
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control form-control-user"
+                                   id="inputRePassword" placeholder="Repeat Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-user" id="inputAgencyName"
+                               placeholder="Agency Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-user" id="inputAgencyDetail"
+                               placeholder="Agency Details">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-user" id="inputContactNumber"
+                               placeholder="Contact Number">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                        Register Account
+                    </button>
+
+                    <div class="form-group m-t-10 mb-0 row">
+                        <div class="col-12 m-t-20">
+                            <p class="font-14 text-muted mb-0">By registering you agree to the Admiria <a href="#">Terms of Use</a></p>
+                        </div>
+                    </div>
+                </form>
             </div>
+
         </div>
+    </div>
+
+    <div class="m-t-40 text-center">
+        <p class="text-white">Already have an account ? <a href="login" class="font-500 font-14 text-white font-secondary"> Login </a> </p>
+        <p class="text-white">©Copyright by Baim 2020. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
     </div>
 
 </div>
@@ -109,6 +113,18 @@
 <!-- Custom scripts for all pages-->
 <script src="js/sb-admin-2.min.js"></script>
 <script type="text/javascript" th:src="@{/js/RegisterPage.js}"></script>
+
+<!-- jQuery  -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/modernizr.min.js"></script>
+<script src="js/jquery.slimscroll.js"></script>
+<script src="js/waves.js"></script>
+<script src="js/jquery.nicescroll.js"></script>
+<script src="js/jquery.scrollTo.min.js"></script>
+
+<!-- App js -->
+<script src="js/app.js"></script>
 
 
 </body>

@@ -4,19 +4,20 @@ import com.bcaf.ivan.FinalProject.Entity.Agency;
 import com.bcaf.ivan.FinalProject.Entity.User;
 import com.bcaf.ivan.FinalProject.Request.RegisterRequest;
 import com.bcaf.ivan.FinalProject.Util.AgencyDao;
+import com.bcaf.ivan.FinalProject.Util.CreateJWT;
 import com.bcaf.ivan.FinalProject.Util.RoleDao;
 import com.bcaf.ivan.FinalProject.Util.UserDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -37,6 +38,7 @@ public class UserApiController {
     public BCryptPasswordEncoder pass() {
         return new BCryptPasswordEncoder();
     }
+
     @PostMapping("/createNewAccount")
     public HttpStatus createNewAccount(@RequestBody RegisterRequest registerRequest) {
         User user = new User();
@@ -78,6 +80,57 @@ public class UserApiController {
         if (user.validatePassword(user.getPassword(), userDB.getPassword())) {
             rs = Obj.writeValueAsString(userDB);
         }
+        return rs;
+    }
+
+    @PostMapping("/login")
+    public String login(String email, String password) throws JsonProcessingException{
+        User user = userDao.findEmailValidation(email);
+        Agency agency = agencyDao.findAgencyByUserId(user.getId());
+
+        String encoded = pass().encode(password);
+        System.out.println(encoded);
+
+        if (pass().matches(password, user.getPassword())){
+            String JWT = new CreateJWT()
+                    .buildJWT9(user, agency.getId());
+            ObjectMapper mapper = new ObjectMapper();
+            ObjectNode userResponse = mapper.createObjectNode();
+            userResponse.put("data", JWT);
+            String json = mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(userResponse);
+            return json;
+        }else{
+            return "error";
+        }
+    }
+
+    @GetMapping("/getUserId")
+    public String getUser(@RequestParam(name="id") String userId) throws JsonProcessingException {
+//        System.out.println("agencyId" + userId);
+        User user = userDao.findById(userId).get();
+//        System.out.println( "agencyId" + user.getEmail());
+        ObjectMapper mapper = new ObjectMapper();
+        String rs = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);
+        return rs;
+    }
+
+    @PostMapping("/updateProfile")
+    public String updateProfile(@RequestBody User user, HttpServletRequest request) throws JsonProcessingException {
+        HttpSession session = request.getSession(true);
+        String userId = (String) session.getAttribute("connectedUser");
+
+        User userDT =  userDao.findById(userId).get();
+        userDT.setFirstName(user.getFirstName());
+        userDT.setLastName(user.getLastName());
+        userDT.setMobileNumber(user.getMobileNumber());
+        userDT.setEmail(user.getEmail());
+        userDT.setPassword(pass().encode(user.getPassword()));
+        userDT.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
+        userDao.save(userDT);
+
+        ObjectMapper Obj = new ObjectMapper();
+        String rs = Obj.writeValueAsString(userDT);
         return rs;
     }
 }

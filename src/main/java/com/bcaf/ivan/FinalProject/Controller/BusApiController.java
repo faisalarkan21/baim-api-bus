@@ -43,6 +43,16 @@ public class BusApiController {
         return rs;
     }
 
+    @GetMapping("/getAllBus-angular")
+    public String getAllBus(@RequestParam(name="id") String agencyId) throws JsonProcessingException {
+        List<Bus> listBus = busDao.findAllBusByAgencyId(agencyId);
+        if (listBus == null)
+            listBus = new LinkedList<>();
+        ObjectMapper Obj = new ObjectMapper();
+        String rs = Obj.writeValueAsString(listBus);
+        return rs;
+    }
+
     @PostMapping("/updateBus")
     public String updateBus(@RequestBody List<Bus> listBus) throws JsonProcessingException {
         for (Bus b : listBus) {
@@ -51,6 +61,17 @@ public class BusApiController {
         }
         ObjectMapper Obj = new ObjectMapper();
         String rs = Obj.writeValueAsString(listBus);
+        return rs;
+    }
+
+    @PostMapping("/updateBus-angular")
+    public String updateBusAngular(@RequestBody Bus Bus) throws JsonProcessingException {
+
+        new Bus().setUpdatedDate(new Timestamp(System.currentTimeMillis()));
+        busDao.save(Bus);
+
+        ObjectMapper Obj = new ObjectMapper();
+        String rs = Obj.writeValueAsString(busDao.findAll());
         return rs;
     }
 
