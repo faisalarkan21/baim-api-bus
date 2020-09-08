@@ -54,7 +54,7 @@ public class TripsApiController {
     }
 
     @GetMapping("/getAllTrips-angular")
-    public String getAllTrips(@RequestParam(name="id") String agencyId) throws JsonProcessingException {
+    public String getAllTrips(@RequestParam(name = "id") String agencyId) throws JsonProcessingException {
 
         List<Trip> listTrip = tripsDao.findAllTripByAgencyId(agencyId);
         List<TripExt> listTripExts = new LinkedList<>();
@@ -79,7 +79,7 @@ public class TripsApiController {
         String agencyId = (String) session.getAttribute("agencyId");
 
         for (TripExt addTrip : listTrip) {
-            Trip newTrip=new Trip();
+            Trip newTrip = new Trip();
             newTrip.setAgencyId(agencyId);
             newTrip.setBusId(addTrip.getBus().getId());
             newTrip.setCreatedDate(new Timestamp(System.currentTimeMillis()));
@@ -95,6 +95,27 @@ public class TripsApiController {
         return rs;
     }
 
+    @PostMapping("/addTrips-angular")
+    public String addTrip(@RequestBody TripExt addTrip) throws JsonProcessingException {
+//        HttpSession session = request.getSession(true);
+//        String agencyId = (String) session.getAttribute("agencyId");
+
+        Trip newTrip = new Trip();
+        newTrip.setAgencyId(addTrip.getAgencyId());
+        newTrip.setBusId(addTrip.getBus().getId());
+        newTrip.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        newTrip.setDestStopId(addTrip.getStop().getId());
+        newTrip.setSourceStopId(addTrip.getStop().getId());
+        newTrip.setFare(addTrip.getFare());
+        newTrip.setJourneyTime(addTrip.getJourneyTime());
+        tripsDao.save(newTrip);
+
+        ObjectMapper Obj = new ObjectMapper();
+        String rs = Obj.writeValueAsString(tripsDao.findAll());
+        return rs;
+    }
+
+
     @PostMapping("/getAllStop")
     public String getAllStop(HttpServletRequest request) throws JsonProcessingException {
         HttpSession session = request.getSession(true);
@@ -108,7 +129,7 @@ public class TripsApiController {
     }
 
     @GetMapping("/getAllStopAngular")
-    public String getAllStopAngular(@RequestParam(name="id") String agencyId) throws JsonProcessingException {
+    public String getAllStopAngular(@RequestParam(name = "id") String agencyId) throws JsonProcessingException {
 
         List<Stop> listStop = stopDao.findAllStopByAgencyId(agencyId);
         if (listStop == null)
@@ -124,7 +145,7 @@ public class TripsApiController {
         String agencyId = (String) session.getAttribute("agencyId");
 
         for (TripExt addTrip : listTrip) {
-            Trip newTrip= tripsDao.findById(addTrip.getId()).get();
+            Trip newTrip = tripsDao.findById(addTrip.getId()).get();
             newTrip.setBusId(addTrip.getBus().getId());
             newTrip.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
             newTrip.setDestStopId(addTrip.getStop().getId());
@@ -153,11 +174,11 @@ public class TripsApiController {
 //            tripsDao.save(newTrip);
 //        }
 
-        Trip newTrip= tripsDao.findById(addTrip.getId()).get();
+        Trip newTrip = tripsDao.findById(addTrip.getId()).get();
         newTrip.setBusId(addTrip.getBus().getId());
         newTrip.setUpdatedDate(new Timestamp(System.currentTimeMillis()));
-        newTrip.setDestStopId(addTrip.getStop().getId());
-        newTrip.setSourceStopId(addTrip.getStop().getId());
+        newTrip.setDestStopId(addTrip.getDestStopId());
+        newTrip.setSourceStopId(addTrip.getSourceStopId());
         newTrip.setFare(addTrip.getFare());
         newTrip.setJourneyTime(addTrip.getJourneyTime());
 
@@ -175,6 +196,14 @@ public class TripsApiController {
         }
         ObjectMapper Obj = new ObjectMapper();
         String rs = Obj.writeValueAsString(ListTrip);
+        return rs;
+    }
+
+    @PostMapping("/deleteTrips-angular")
+    public String deleteTrips(@RequestBody String tripId) throws JsonProcessingException {
+        tripsDao.deleteById(tripId);
+        ObjectMapper Obj = new ObjectMapper();
+        String rs = Obj.writeValueAsString(tripsDao.findAll());
         return rs;
     }
 

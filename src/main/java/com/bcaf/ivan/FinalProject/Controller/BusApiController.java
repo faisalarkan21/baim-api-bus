@@ -44,7 +44,7 @@ public class BusApiController {
     }
 
     @GetMapping("/getAllBus-angular")
-    public String getAllBus(@RequestParam(name="id") String agencyId) throws JsonProcessingException {
+    public String getAllBus(@RequestParam(name = "id") String agencyId) throws JsonProcessingException {
         List<Bus> listBus = busDao.findAllBusByAgencyId(agencyId);
         if (listBus == null)
             listBus = new LinkedList<>();
@@ -76,7 +76,7 @@ public class BusApiController {
     }
 
     @PostMapping("/addBus")
-    public String addBus(@RequestBody List<Bus> listBus,HttpServletRequest request) throws JsonProcessingException {
+    public String addBus(@RequestBody List<Bus> listBus, HttpServletRequest request) throws JsonProcessingException {
         HttpSession session = request.getSession(true);
         String agencyId = (String) session.getAttribute("agencyId");
         for (Bus b : listBus) {
@@ -89,6 +89,21 @@ public class BusApiController {
         return rs;
     }
 
+    @PostMapping("/addBus-angular")
+    public String addBus(@RequestBody Bus listBus) throws JsonProcessingException {
+        Bus b = new Bus();
+        b.setAgencyId(listBus.getAgencyId());
+        b.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        b.setMake(listBus.getMake());
+        b.setCapacity(listBus.getCapacity());
+        b.setCode(listBus.getCode());
+        busDao.save(b);
+
+        ObjectMapper Obj = new ObjectMapper();
+        String rs = Obj.writeValueAsString(busDao.findAll());
+        return rs;
+    }
+
     @PostMapping("/deleteBus")
     public String deleteBus(@RequestBody List<Bus> listBus) throws JsonProcessingException {
         for (Bus b : listBus) {
@@ -96,6 +111,14 @@ public class BusApiController {
         }
         ObjectMapper Obj = new ObjectMapper();
         String rs = Obj.writeValueAsString(listBus);
+        return rs;
+    }
+
+    @PostMapping("/deleteBus-angular")
+    public String deleteBus(@RequestBody String id) throws JsonProcessingException {
+        busDao.deleteById(id);
+        ObjectMapper Obj = new ObjectMapper();
+        String rs = Obj.writeValueAsString(busDao.findAll());
         return rs;
     }
 }
